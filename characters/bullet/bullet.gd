@@ -1,20 +1,17 @@
 class_name Bullet
 extends RigidBody2D
 
-const SPEED: int = 20
+const SPEED: int = 1000
 
-@export var is_friendly : bool
+@onready var explosion = preload("res://characters/bullet/explosion.tscn").instantiate()
+@onready var velocity = Vector2(SPEED, 0).rotated(rotation)
+@onready var viewport_size: Vector2 = get_viewport_rect().size
 
-@onready var explosion = preload("res://scenes/explosion.tscn").instantiate()
 
-
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	var collision_info
-	if is_friendly:
-		collision_info = move_and_collide(Vector2(0, -SPEED))
-	elif not is_friendly:
-		collision_info = move_and_collide(Vector2(0, SPEED))
-		
+	collision_info = move_and_collide(velocity * delta)
+	
 	if collision_info:
 		var thing_we_hit = collision_info.get_collider()
 		spawn_explosion()
@@ -22,17 +19,10 @@ func _physics_process(_delta: float) -> void:
 			SignalBus.enemy_hit.emit(thing_we_hit.awarded_points)
 			thing_we_hit.queue_free()
 			queue_free()
-		if thing_we_hit is Starship:
-			thing_we_hit.decrease_health(1)
-			queue_free()
-		if thing_we_hit is Bullet:
-			if thing_we_hit.is_friendly != is_friendly:
-				thing_we_hit.queue_free()
-				queue_free()
-		if thing_we_hit is Bunker:
+		if thing_we_hit is Saucer:
 			thing_we_hit.damage_at(self.global_position)
 			queue_free()
-	if (position.y < 0) or (position.y > get_viewport_rect().size.y):
+	if (position.y < 0) or (position.x < 0) or (position.y > viewport_size.y) or (position.x > viewport_size.x):
 		queue_free()
 
 

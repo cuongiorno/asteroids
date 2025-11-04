@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://dpkibn8nxugts"
+path="res://.godot/imported/starship.png-2f05531dbb7d035787bf37197683786d.image"
+
+[deps]
+
+source_file="res://characters/player/starship.png"
+dest_files=["res://.godot/imported/starship.png-2f05531dbb7d035787bf37197683786d.image"]
+
+[params]
+

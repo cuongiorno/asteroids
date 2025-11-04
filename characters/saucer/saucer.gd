@@ -1,0 +1,2 @@
+class_name Saucer
+extends AnimatableBody2D

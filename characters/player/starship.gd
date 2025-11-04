@@ -3,13 +3,16 @@ extends CharacterBody2D
 
 signal player_dead
 
-var speed: int = 10
+const STARSHIP_HEIGHT: float = 8.0
+const MOVEMENT_SPEED: int = 200
+const ROTATION_SPEED: int = 3
+
+var rotation_direction = 0
 var player_health: int = 3
 var player_score: int = 0
 var reloaded: bool = true
 
-@onready var bullet_scene = preload("res://scenes/bullet.tscn")
-@onready var starship_height = $CollisionShape2D.shape.get_size()
+@onready var bullet_scene = preload("res://characters/bullet/bullet.tscn")
 @onready var flash_rect = $CanvasLayer/ColorRect
 
 
@@ -17,11 +20,15 @@ func _on_ready() -> void:
 	SignalBus.enemy_hit.connect(add_score)
 
 
-func _process(_delta) -> void:
-	if Input.is_action_pressed("ui_left"):
-		move_and_collide(Vector2(-speed, 0))
-	if Input.is_action_pressed("ui_right"):
-		move_and_collide(Vector2(speed, 0))
+func _physics_process(delta: float) -> void:
+	get_input()
+	rotation += rotation_direction * ROTATION_SPEED * delta
+	move_and_slide()
+
+
+func get_input():
+	rotation_direction = Input.get_axis("ui_left", "ui_right")
+	velocity = transform.x * Input.get_axis("ui_down", "ui_up") * MOVEMENT_SPEED
 
 
 #region Shooting
@@ -33,14 +40,12 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 func fire_bullet():
 	if reloaded:
 		var bullet = bullet_scene.instantiate()
-		bullet.is_friendly = true
-		bullet.collision_layer = 3 
-		bullet.collision_mask = 2
-		bullet.position = self.global_position - Vector2(0, (starship_height.y / 2))
+		bullet.rotation = self.rotation
+		bullet.position = self.global_position - Vector2(0, (STARSHIP_HEIGHT / 2))
 		get_parent().add_child(bullet)
 		$AudioStreamPlayer2D.play()
 		reloaded = false
-		$Timer.start(1)
+		$Timer.start(0.5)
 
 
 func _on_timer_timeout() -> void:
@@ -59,4 +64,3 @@ func decrease_health(damage):
 
 func add_score(points_awarded):
 	player_score += points_awarded
-	

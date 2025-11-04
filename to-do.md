@@ -6,7 +6,7 @@
 	- [ ]        Asteroids will break into smaller asteroids when shot (The smallest will disappear when shot).
 	- [ ]        Asteroids will drift around until they are shot or they collide with the player. If the player collides with an asteroid, they will lose a life.
 - [ ]    Enable screen wrapping. (Objects leaving the top of the screen should enter the bottom, for example)
-- [ ]    Add menus and UI.
+- [x]    Add menus and UI.
 - [ ]    Add sound effects and particle effects.
 
 ## Stretch goal:

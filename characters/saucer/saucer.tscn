@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://o6ey0jimhkuk"]
+
+[ext_resource type="Texture2D" uid="uid://bkeosp6773nip" path="res://characters/saucer/saucer.png" id="1_618kb"]
+[ext_resource type="Script" uid="uid://c0m7hnxbcbx26" path="res://characters/saucer/saucer.gd" id="1_am8nb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_am8nb"]
+radius = 8.0
+
+[node name="Saucer" type="AnimatableBody2D"]
+script = ExtResource("1_am8nb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_618kb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_am8nb")

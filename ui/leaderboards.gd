@@ -8,7 +8,7 @@ func _on_ready():
 
 
 func _on_exit_button_up():
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
 
 
 func load_results_to_grid():

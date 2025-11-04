@@ -11,13 +11,12 @@ var is_invaded: bool = false
 @onready var restart_button = $PopupMenu/Panel/MarginContainer/VBoxContainer/Restart
 @onready var resume_button = $PopupMenu/Panel/MarginContainer/VBoxContainer/Resume
 @onready var exit_button = $PopupMenu/Panel/MarginContainer/VBoxContainer/Exit
-@onready var bunker_scene = preload("res://scenes/bunker.tscn")
 
 
 func _on_ready():
 	territory_invaded.connect(game_finished.bind(false))
 	$Starship.player_dead.connect(game_finished.bind(false))
-	spawn_bunkers()
+	#spawn_bunkers()
 
 
 func _process(_delta):
@@ -65,17 +64,18 @@ func game_finished(victory: bool) -> void:
 	popup_menu.visible = true
 
 
-func spawn_bunkers() -> void:
-	var start_pos_y = 600
-	var max_columns = floori(get_viewport().size.x / (Bunker.BUNKER_WIDTH + BUNKER_OFFSET))
-	var next_pos
-	var total_width = max_columns * (Bunker.BUNKER_WIDTH + BUNKER_OFFSET) - BUNKER_OFFSET
-
-	var start_pos_x = (get_viewport().size.x - total_width) / 2
-	for y in max_columns:
-		@warning_ignore("integer_division")
-		next_pos = Vector2(start_pos_x, start_pos_y)
-		var bunker = bunker_scene.instantiate()
-		bunker.position = next_pos
-		add_child(bunker)
-		start_pos_x += (Bunker.BUNKER_WIDTH + BUNKER_OFFSET)
+#func spawn_bunkers() -> void:
+	#var start_pos_y = 600
+	#var max_columns = floori(get_viewport().size.x / (Bunker.BUNKER_WIDTH + BUNKER_OFFSET))
+	#var next_pos
+	#var total_width = max_columns * (Bunker.BUNKER_WIDTH + BUNKER_OFFSET) - BUNKER_OFFSET
+#
+	#var start_pos_x = (get_viewport().size.x - total_width) / 2
+	#for y in max_columns:
+		#@warning_ignore("integer_division")
+		#next_pos = Vector2(start_pos_x, start_pos_y)
+		#var bunker = bunker_scene.instantiate()
+		#bunker.position = next_pos
+		#add_child(bunker)
+		#start_pos_x += (Bunker.BUNKER_WIDTH + BUNKER_OFFSET)
+#
