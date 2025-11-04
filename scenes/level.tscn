@@ -1,0 +1,91 @@
+[gd_scene load_steps=10 format=3 uid="uid://dgnt6aqhuo2e1"]
+
+[ext_resource type="PackedScene" uid="uid://ykhx7reb3btj" path="res://characters/player/starship.tscn" id="1_2q6dc"]
+[ext_resource type="Script" uid="uid://65tp5l1ad1ss" path="res://scenes/level.gd" id="1_w8frs"]
+[ext_resource type="PackedScene" uid="uid://b0i08kfoswbrd" path="res://scenes/enemy_container.tscn" id="2_w7c3h"]
+[ext_resource type="PackedScene" uid="uid://ctpwrevlsospi" path="res://ui/popup_menu.tscn" id="4_mx8sn"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_2q6dc"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_w7c3h"]
+normal = Vector2(-1, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mx8sn"]
+size = Vector2(480, 80)
+
+[sub_resource type="LabelSettings" id="LabelSettings_w8frs"]
+font_size = 24
+font_color = Color(1, 1, 1, 0.5019608)
+
+[sub_resource type="LabelSettings" id="LabelSettings_mx8sn"]
+font_size = 24
+font_color = Color(1, 1, 1, 0.5019608)
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_w8frs")
+
+[node name="Starship" parent="." instance=ExtResource("1_2q6dc")]
+position = Vector2(240, 680)
+
+[node name="BorderLeft" type="StaticBody2D" parent="."]
+position = Vector2(0, 360)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderLeft"]
+shape = SubResource("WorldBoundaryShape2D_2q6dc")
+
+[node name="BorderRight" type="StaticBody2D" parent="."]
+position = Vector2(480, 360)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderRight"]
+shape = SubResource("WorldBoundaryShape2D_w7c3h")
+
+[node name="EnemyContainer" parent="." instance=ExtResource("2_w7c3h")]
+
+[node name="PlayerTerritory" type="Area2D" parent="."]
+position = Vector2(240, 680)
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerTerritory"]
+shape = SubResource("RectangleShape2D_mx8sn")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.15, 0.15, 0.15, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 54.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="Health" type="Label" parent="HUD/MarginContainer"]
+layout_mode = 2
+text = "placeholder"
+label_settings = SubResource("LabelSettings_w8frs")
+
+[node name="Score" type="Label" parent="HUD/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "placeholder"
+label_settings = SubResource("LabelSettings_mx8sn")
+horizontal_alignment = 2
+
+[node name="PopupMenu" parent="." instance=ExtResource("4_mx8sn")]
+visible = false
+
+[connection signal="ready" from="." to="." method="_on_ready"]
+[connection signal="body_entered" from="PlayerTerritory" to="." method="_on_player_territory_body_entered"]

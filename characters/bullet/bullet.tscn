@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://bfwkbg5k1qu1r"]
+
+[ext_resource type="Script" uid="uid://caqu3rtmdq7fo" path="res://characters/bullet/bullet.gd" id="1_pun8s"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_y25gk"]
+
+[sub_resource type="Gradient" id="Gradient_mkf8s"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_y25gk"]
+gradient = SubResource("Gradient_mkf8s")
+width = 4
+height = 12
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y25gk"]
+size = Vector2(4, 12)
+
+[node name="Bullet" type="RigidBody2D"]
+collision_layer = 3
+physics_material_override = SubResource("PhysicsMaterial_y25gk")
+freeze = true
+script = ExtResource("1_pun8s")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-2.3841858e-07, 0)
+texture = SubResource("GradientTexture2D_y25gk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_y25gk")
