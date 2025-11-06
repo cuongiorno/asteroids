@@ -1,40 +1,65 @@
 class_name Starship
-extends CharacterBody2D
+extends RigidBody2D
 
 signal player_dead
 
 const STARSHIP_HEIGHT: float = 8.0
-const MOVEMENT_SPEED: int = 200
-const ROTATION_SPEED: int = 3
 
-var rotation_direction = 0
+@export var engine_power = 400
+@export var spin_power = 500
+
+var thrust = Vector2.ZERO
+var rotation_dir = 0
+var teleport_pos = null
 var player_health: int = 3
 var player_score: int = 0
 var reloaded: bool = true
 
 @onready var bullet_scene = preload("res://characters/bullet/bullet.tscn")
 @onready var flash_rect = $CanvasLayer/ColorRect
+@onready var screensize = get_viewport_rect().size
 
 
 func _on_ready() -> void:
 	SignalBus.enemy_hit.connect(add_score)
 
 
-func _physics_process(delta: float) -> void:
+#region Movement
+func _physics_process(_delta: float) -> void:
 	get_input()
-	rotation += rotation_direction * ROTATION_SPEED * delta
-	move_and_slide()
+	constant_force = thrust 
+	constant_torque = rotation_dir * spin_power 
+
+
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	var xform = state.transform
+	xform.origin.x = wrapf(xform.origin.x, 0, screensize.x)
+	xform.origin.y = wrapf(xform.origin.y, 0, screensize.y)
+	state.transform = xform
+
+	if teleport_pos:
+		state.transform.origin = teleport_pos
+		teleport_pos = null
 
 
 func get_input():
-	rotation_direction = Input.get_axis("ui_left", "ui_right")
-	velocity = transform.x * Input.get_axis("ui_down", "ui_up") * MOVEMENT_SPEED
+	thrust = Vector2.ZERO
+	if Input.is_action_pressed("thrust"):
+		thrust = -transform.y * engine_power
+	if Input.is_action_just_pressed("warp"):
+		teleport_pos = Vector2(randf_range(0, screensize.x), randf_range(0, screensize.y))
+	rotation_dir = Input.get_axis("rotate_left", "rotate_right")
+#endregion
 
 
 #region Shooting
 func _unhandled_key_input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("shoot"):
 		fire_bullet()
+
+
+func _on_timer_timeout() -> void:
+	reloaded = true
 
 
 func fire_bullet():
@@ -46,10 +71,6 @@ func fire_bullet():
 		$AudioStreamPlayer2D.play()
 		reloaded = false
 		$Timer.start(0.5)
-
-
-func _on_timer_timeout() -> void:
-	reloaded = true
 #endregion
 
 

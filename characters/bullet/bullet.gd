@@ -4,7 +4,7 @@ extends RigidBody2D
 const SPEED: int = 1000
 
 @onready var explosion = preload("res://characters/bullet/explosion.tscn").instantiate()
-@onready var velocity = Vector2(SPEED, 0).rotated(rotation)
+@onready var velocity = Vector2(0, -SPEED).rotated(rotation)
 @onready var viewport_size: Vector2 = get_viewport_rect().size
 
 
