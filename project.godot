@@ -24,6 +24,7 @@ Global="*res://globals/global.gd"
 
 window/size/viewport_width=1024
 window/size/viewport_height=768
+window/stretch/scale=2.0
 
 [input]
 

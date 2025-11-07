@@ -18,7 +18,12 @@ func _on_restart_button_up():
 
 func _on_exit_button_up():
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+
+
+func _on_visibility_changed():
+	if visible:
+		$Panel/MarginContainer/VBoxContainer/Resume.grab_focus()
 
 
 func resume_game():

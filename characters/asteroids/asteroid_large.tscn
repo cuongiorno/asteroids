@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dl42firb82u6i"]
+
+[ext_resource type="Script" uid="uid://bdnhjnku6y21e" path="res://characters/asteroids/asteroid_large.gd" id="1_kp5yk"]
+[ext_resource type="Texture2D" uid="uid://b8q5opsml3vtn" path="res://characters/asteroids/asteroid-large.png" id="2_vq4uj"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vq4uj"]
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gufur"]
+radius = 16.0
+
+[node name="AsteroidLarge" type="RigidBody2D" groups=["enemies"]]
+collision_layer = 3
+collision_mask = 3
+physics_material_override = SubResource("PhysicsMaterial_vq4uj")
+gravity_scale = 0.0
+max_contacts_reported = 10
+linear_damp = 1.0
+angular_damp = 2.0
+script = ExtResource("1_kp5yk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_vq4uj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_gufur")
+
+[connection signal="ready" from="." to="." method="_on_ready"]
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]

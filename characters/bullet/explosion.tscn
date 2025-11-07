@@ -4,7 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://duod54ay1lls4" path="res://characters/bullet/pixel-explosion-319166.mp3" id="2_nfeox"]
 
 [sub_resource type="Gradient" id="Gradient_17npe"]
-colors = PackedColorArray(1, 0.88235295, 0, 1, 1, 0.5019608, 0, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_nfeox"]
 gradient = SubResource("Gradient_17npe")

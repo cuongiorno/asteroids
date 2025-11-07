@@ -22,6 +22,7 @@ var reloaded: bool = true
 
 func _on_ready() -> void:
 	SignalBus.enemy_hit.connect(add_score)
+	global_position = screensize / 2
 
 
 #region Movement
@@ -85,3 +86,8 @@ func decrease_health(damage):
 
 func add_score(points_awarded):
 	player_score += points_awarded
+
+
+func _on_body_entered(body):
+	if (body is Asteroid) and (player_health > 0):
+		decrease_health(1)

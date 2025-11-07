@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://by85i2dacocvn"]
+[gd_scene load_steps=4 format=3 uid="uid://by85i2dacocvn"]
 
+[ext_resource type="Theme" uid="uid://bqu7tbnw28t5y" path="res://ui/new_theme.tres" id="1_0dkrt"]
 [ext_resource type="Script" uid="uid://4gyik7ucefog" path="res://ui/main_menu.gd" id="1_l6cm7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ekxnf"]
@@ -12,6 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_0dkrt")
 script = ExtResource("1_l6cm7")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -50,20 +52,33 @@ autowrap_mode = 2
 
 [node name="Start" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../Exit")
+focus_neighbor_bottom = NodePath("../Leaderboards")
+focus_next = NodePath("../Leaderboards")
+focus_previous = NodePath("../Exit")
 theme_override_font_sizes/font_size = 24
 text = "New game"
 
 [node name="Leaderboards" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../Start")
+focus_neighbor_bottom = NodePath("../Exit")
+focus_next = NodePath("../Exit")
+focus_previous = NodePath("../Start")
 theme_override_font_sizes/font_size = 24
 text = "Leaderboards"
 
 [node name="Exit" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../Leaderboards")
+focus_neighbor_bottom = NodePath("../Start")
+focus_next = NodePath("../Start")
+focus_previous = NodePath("../Leaderboards")
 theme_override_font_sizes/font_size = 24
 text = "Exit
 "
 
+[connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/Start" to="." method="_on_start_button_up"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/Leaderboards" to="." method="_on_leaderboards_button_up"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/Exit" to="." method="_on_exit_button_up"]

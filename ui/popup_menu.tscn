@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://ctpwrevlsospi"]
+[gd_scene load_steps=4 format=3 uid="uid://ctpwrevlsospi"]
 
 [ext_resource type="Script" uid="uid://bxhbfxs00k3yg" path="res://ui/popup_menu.gd" id="1_1s2af"]
+[ext_resource type="Theme" uid="uid://bqu7tbnw28t5y" path="res://ui/new_theme.tres" id="2_6of3c"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ppgk2"]
 font_size = 24
@@ -21,6 +22,7 @@ offset_right = 150.0
 offset_bottom = 125.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_6of3c")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel"]
 layout_mode = 1
@@ -60,6 +62,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Exit"
 
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="button_up" from="Panel/MarginContainer/VBoxContainer/Resume" to="." method="_on_resume_button_up"]
 [connection signal="button_up" from="Panel/MarginContainer/VBoxContainer/Restart" to="." method="_on_restart_button_up"]
 [connection signal="button_up" from="Panel/MarginContainer/VBoxContainer/Exit" to="." method="_on_exit_button_up"]

@@ -1,34 +1,21 @@
 extends Node2D
 
-signal territory_invaded
-
-const BUNKER_OFFSET: int = 60
-
-var is_invaded: bool = false
-
 @onready var popup_menu = $PopupMenu
 @onready var result_label = $PopupMenu/Panel/MarginContainer/VBoxContainer/Result
-@onready var restart_button = $PopupMenu/Panel/MarginContainer/VBoxContainer/Restart
 @onready var resume_button = $PopupMenu/Panel/MarginContainer/VBoxContainer/Resume
 @onready var exit_button = $PopupMenu/Panel/MarginContainer/VBoxContainer/Exit
+@onready var asteroid_large_scene = preload("res://characters/asteroids/asteroid_large.tscn")
 
 
 func _on_ready():
-	territory_invaded.connect(game_finished.bind(false))
 	$Starship.player_dead.connect(game_finished.bind(false))
-	#spawn_bunkers()
+	spawn_asteroids()
 
 
 func _process(_delta):
 	if $Starship:
 		$HUD/MarginContainer/Score.text = "Score: " + str($Starship.player_score)
 		$HUD/MarginContainer/Health.text = "Health: " + str($Starship.player_health)
-
-
-func _on_player_territory_body_entered(body):
-	if body is Enemy and not is_invaded:
-		is_invaded = true
-		territory_invaded.emit()
 
 
 func _input(_event: InputEvent) -> void:
@@ -62,20 +49,10 @@ func game_finished(victory: bool) -> void:
 	get_tree().paused = true
 	resume_button.visible = false
 	popup_menu.visible = true
+	exit_button.grab_focus()
 
 
-#func spawn_bunkers() -> void:
-	#var start_pos_y = 600
-	#var max_columns = floori(get_viewport().size.x / (Bunker.BUNKER_WIDTH + BUNKER_OFFSET))
-	#var next_pos
-	#var total_width = max_columns * (Bunker.BUNKER_WIDTH + BUNKER_OFFSET) - BUNKER_OFFSET
-#
-	#var start_pos_x = (get_viewport().size.x - total_width) / 2
-	#for y in max_columns:
-		#@warning_ignore("integer_division")
-		#next_pos = Vector2(start_pos_x, start_pos_y)
-		#var bunker = bunker_scene.instantiate()
-		#bunker.position = next_pos
-		#add_child(bunker)
-		#start_pos_x += (Bunker.BUNKER_WIDTH + BUNKER_OFFSET)
-#
+func spawn_asteroids() -> void:
+	for i in 5:
+		var asteroid_large = asteroid_large_scene.instantiate()
+		$EnemySpawner.add_child(asteroid_large)

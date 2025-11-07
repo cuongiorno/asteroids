@@ -5,6 +5,7 @@ extends Control
 
 func _on_ready():
 	load_results_to_grid()
+	$MarginContainer/VBoxContainer/Exit.grab_focus()
 
 
 func _on_exit_button_up():
