@@ -14,6 +14,7 @@ var teleport_pos = null
 var player_health: int = 3
 var player_score: int = 0
 var reloaded: bool = true
+var immune: bool = false
 
 @onready var bullet_scene = preload("res://characters/bullet/bullet.tscn")
 @onready var flash_rect = $CanvasLayer/ColorRect
@@ -40,6 +41,8 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 
 	if teleport_pos:
 		state.transform.origin = teleport_pos
+		state.linear_velocity = Vector2.ZERO
+		state.angular_velocity = 0
 		teleport_pos = null
 
 
@@ -69,12 +72,13 @@ func fire_bullet():
 		bullet.rotation = self.rotation
 		bullet.position = self.global_position - Vector2(0, (STARSHIP_HEIGHT / 2))
 		get_parent().add_child(bullet)
-		$AudioStreamPlayer2D.play()
+		#$AudioStreamPlayer2D.play()
 		reloaded = false
-		$Timer.start(0.5)
+		$Timer.start(0.25)
 #endregion
 
 
+#region Damage taken
 func decrease_health(damage):
 	flash_rect.modulate.a = 0.4
 	var tween = create_tween()
@@ -84,10 +88,17 @@ func decrease_health(damage):
 		player_dead.emit()
 
 
+func _on_body_entered(body):
+	if not immune:
+		if (body is Asteroid) and (player_health > 0):
+			decrease_health(1)
+			teleport_pos = screensize / 2
+			immune = true
+			$AnimationPlayer.play("blink")
+			await get_tree().create_timer(3.0).timeout
+			immune = false
+#endregion
+
+
 func add_score(points_awarded):
 	player_score += points_awarded
-
-
-func _on_body_entered(body):
-	if (body is Asteroid) and (player_health > 0):
-		decrease_health(1)

@@ -8,6 +8,10 @@ const SPEED: int = 1000
 @onready var viewport_size: Vector2 = get_viewport_rect().size
 
 
+func _on_ready() -> void:
+	AudioManager.play_sound("res://characters/bullet/retro-laser-1-236669.mp3")
+
+
 func _physics_process(delta: float) -> void:
 	var collision_info
 	collision_info = move_and_collide(velocity * delta)

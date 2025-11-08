@@ -19,6 +19,7 @@ config/icon="uid://cs32ldys8pk0b"
 
 SignalBus="*res://globals/signal_bus.gd"
 Global="*res://globals/global.gd"
+AudioManager="*res://globals/audio_manager.gd"
 
 [display]
 
