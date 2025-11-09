@@ -5,7 +5,6 @@ extends Asteroid
 
 func _on_ready() -> void:
 	randomize()
-	awarded_points = 2
 	sprite = $Sprite2D
 
 

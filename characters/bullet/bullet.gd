@@ -3,12 +3,15 @@ extends RigidBody2D
 
 const SPEED: int = 1000
 
-@onready var explosion = preload("res://characters/bullet/explosion.tscn").instantiate()
+var init_pos
+
+@onready var explosion_scene = preload("res://characters/bullet/explosion.tscn")
 @onready var velocity = Vector2(0, -SPEED).rotated(rotation)
 @onready var viewport_size: Vector2 = get_viewport_rect().size
 
 
 func _on_ready() -> void:
+	init_pos = self.global_position
 	AudioManager.play_sound("res://characters/bullet/retro-laser-1-236669.mp3")
 
 
@@ -19,17 +22,21 @@ func _physics_process(delta: float) -> void:
 	if collision_info:
 		var thing_we_hit = collision_info.get_collider()
 		spawn_explosion()
-		if thing_we_hit.is_in_group("enemies"):
-			SignalBus.enemy_hit.emit(thing_we_hit.awarded_points)
+		if (thing_we_hit is Asteroid) or (thing_we_hit is Saucer):
 			thing_we_hit.queue_free()
+			SignalBus.enemy_hit.emit(1)
 			queue_free()
-		if thing_we_hit is Saucer:
-			thing_we_hit.damage_at(self.global_position)
+		if (thing_we_hit is Starship):
+			thing_we_hit.decrease_health(1)
 			queue_free()
+	if self.global_position.distance_to(init_pos) > 150:
+		queue_free()
 	if (position.y < 0) or (position.x < 0) or (position.y > viewport_size.y) or (position.x > viewport_size.x):
 		queue_free()
-
+	
+	#print(self.global_position.distance_to(init_pos))
 
 func spawn_explosion():
+	var explosion = explosion_scene.instantiate()
 	explosion.global_position = self.global_position
 	get_tree().root.add_child(explosion)

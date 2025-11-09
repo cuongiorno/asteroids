@@ -72,7 +72,6 @@ func fire_bullet():
 		bullet.rotation = self.rotation
 		bullet.position = self.global_position - Vector2(0, (STARSHIP_HEIGHT / 2))
 		get_parent().add_child(bullet)
-		#$AudioStreamPlayer2D.play()
 		reloaded = false
 		$Timer.start(0.25)
 #endregion

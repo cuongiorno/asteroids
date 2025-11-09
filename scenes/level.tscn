@@ -1,23 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://dgnt6aqhuo2e1"]
+[gd_scene load_steps=8 format=3 uid="uid://dgnt6aqhuo2e1"]
 
 [ext_resource type="PackedScene" uid="uid://ykhx7reb3btj" path="res://characters/player/starship.tscn" id="1_2q6dc"]
 [ext_resource type="Script" uid="uid://65tp5l1ad1ss" path="res://scenes/level.gd" id="1_w8frs"]
 [ext_resource type="Theme" uid="uid://bqu7tbnw28t5y" path="res://ui/new_theme.tres" id="3_mx8sn"]
 [ext_resource type="PackedScene" uid="uid://ctpwrevlsospi" path="res://ui/popup_menu.tscn" id="4_mx8sn"]
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_2q6dc"]
-normal = Vector2(1, 0)
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_w7c3h"]
-normal = Vector2(-1, 0)
-
 [sub_resource type="LabelSettings" id="LabelSettings_w8frs"]
 font_size = 24
-font_color = Color(1, 1, 1, 0.5019608)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ppgk2"]
+font_size = 24
 
 [sub_resource type="LabelSettings" id="LabelSettings_mx8sn"]
 font_size = 24
-font_color = Color(1, 1, 1, 0.5019608)
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_w8frs")
@@ -25,25 +20,19 @@ script = ExtResource("1_w8frs")
 [node name="Starship" parent="." instance=ExtResource("1_2q6dc")]
 position = Vector2(512, 384)
 
-[node name="BorderLeft" type="StaticBody2D" parent="."]
-visible = false
-position = Vector2(0, 360)
-collision_layer = 0
-collision_mask = 0
+[node name="EnemySpawner" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderLeft"]
-shape = SubResource("WorldBoundaryShape2D_2q6dc")
+[node name="SaucerSpawner" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
 
-[node name="BorderRight" type="StaticBody2D" parent="."]
-visible = false
-position = Vector2(480, 360)
-collision_layer = 0
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderRight"]
-shape = SubResource("WorldBoundaryShape2D_w7c3h")
-
-[node name="EnemySpawner" type="Node2D" parent="."]
+[node name="TimeLeft" type="Timer" parent="."]
+wait_time = 120.0
+one_shot = true
+autostart = true
 
 [node name="HUD" type="CanvasLayer" parent="."]
 layer = -1
@@ -59,6 +48,7 @@ size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD"]
+modulate = Color(1, 1, 1, 0.2509804)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 54.0
@@ -74,6 +64,12 @@ layout_mode = 2
 text = "placeholder"
 label_settings = SubResource("LabelSettings_w8frs")
 
+[node name="Timer" type="Label" parent="HUD/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "placeholder"
+label_settings = SubResource("LabelSettings_ppgk2")
+
 [node name="Score" type="Label" parent="HUD/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
@@ -85,3 +81,6 @@ horizontal_alignment = 2
 visible = false
 
 [connection signal="ready" from="." to="." method="_on_ready"]
+[connection signal="timeout" from="EnemySpawner" to="." method="_on_enemy_spawner_timeout"]
+[connection signal="timeout" from="SaucerSpawner" to="." method="_on_saucer_spawner_timeout"]
+[connection signal="timeout" from="TimeLeft" to="." method="_on_time_left_timeout"]

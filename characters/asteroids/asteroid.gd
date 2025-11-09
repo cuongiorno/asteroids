@@ -1,7 +1,6 @@
 class_name Asteroid
 extends RigidBody2D
 
-var awarded_points
 var sprite
 var angle = 0.0
 

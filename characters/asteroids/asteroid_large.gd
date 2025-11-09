@@ -6,7 +6,6 @@ extends Asteroid
 
 func _on_ready() -> void:
 	randomize()
-	awarded_points = 1
 	sprite = $Sprite2D
 	global_position = init_pos
 
