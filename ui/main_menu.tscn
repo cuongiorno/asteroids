@@ -45,7 +45,7 @@ layout_mode = 2
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-text = "SPACE INVADERS"
+text = "ASTEROIDS!"
 label_settings = SubResource("LabelSettings_ekxnf")
 horizontal_alignment = 1
 autowrap_mode = 2

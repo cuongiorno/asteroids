@@ -3,6 +3,7 @@ extends Control
 
 func _on_ready():
 	$MarginContainer/VBoxContainer/Start.grab_focus()
+	get_window().title = "Asteroids"
 
 
 func _on_start_button_up():

@@ -13,7 +13,7 @@ config_version=5
 config/name="4_asteroids"
 run/main_scene="uid://by85i2dacocvn"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="uid://cs32ldys8pk0b"
+config/icon="uid://ufqlee024tlb"
 
 [autoload]
 
